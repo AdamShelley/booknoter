@@ -16,9 +16,8 @@
   },
   "rules": {
     /** These rules are disabled because they are incompatible with prettier */
-    "vue/html-self-closing": "off",
-    "vue/singleline-html-element-content-newline": "off",
-     "react/prop-types": "off"
+     "react/prop-types": "off",
+    "no-unused-vars": "warn"
   },
   "plugins": ["react"],
   "settings": {
