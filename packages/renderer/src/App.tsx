@@ -4,7 +4,7 @@ import { ThemeProvider } from "./providers/theme-provider";
 
 const App = () => {
   return (
-    <main className="flex items-start justify-center w-screen h-screen p-6">
+    <main className="flex items-start justify-center w-screen h-screen p-3">
       <ThemeProvider
         defaultTheme="dark"
         storageKey="vite-ui-theme"
