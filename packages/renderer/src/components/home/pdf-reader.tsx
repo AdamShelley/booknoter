@@ -1,7 +1,7 @@
 const PDFReader = () => {
   return (
-    <div className="border border-gray-500 w-1/2 rounded-sm p-3 shadow-xl">
-      <h1>PDF Reader</h1>
+    <div className="border border-gray-500 w-1/2 rounded-sm p-3 shadow-">
+      <p> Left Side</p>
     </div>
   );
 };
