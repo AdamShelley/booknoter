@@ -90,8 +90,6 @@ const RSSFeed: React.FC = () => {
       {selectedItem && (
         <div className="mt-4 p-4 border border-gray-300 rounded-md">
           <h3 className="text-lg font-semibold">{selectedItem.title}</h3>
-          {/* <p className="text-sm text-gray-500">{selectedItem.pubDate}</p> */}
-
           <div
             className="w-[85vw] lg:w-[50vw] xl:w-[45vw] 2xl:w-[30vw] prose dark:prose-invert 
             prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-base
