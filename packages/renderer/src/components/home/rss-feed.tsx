@@ -53,8 +53,12 @@ const RSSFeed: React.FC = () => {
     setSelectedItem(item);
   };
 
+  const handleUnselect = () => {
+    setSelectedItem(null);
+  };
+
   return (
-    <div className="border border-gray-500 flex-1 rounded-sm p-3 shadow-md">
+    <div className="border border-gray-500 flex-1 rounded-sm p-3 shadow-md max-h-screen overflow-y-auto">
       <h1 className="text-xl font-bold mb-4">RSS Feed</h1>
       <Button
         variant="ghost"
@@ -88,8 +92,9 @@ const RSSFeed: React.FC = () => {
           })}
       </ul>
       {selectedItem && (
-        <div className="mt-4 p-4 border border-gray-300 rounded-md">
+        <div className="mt-4 p-4 border border-gray-300 rounded-md ">
           <h3 className="text-lg font-semibold">{selectedItem.title}</h3>
+          <Button onClick={handleUnselect}>Go Back</Button>
           <div
             className="w-[85vw] lg:w-[50vw] xl:w-[45vw] 2xl:w-[30vw] prose dark:prose-invert 
             prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-base
