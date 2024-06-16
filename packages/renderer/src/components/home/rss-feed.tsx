@@ -50,7 +50,12 @@ const RSSFeed: React.FC = () => {
   };
 
   const handleItemClick = (item: RSSFeedItem) => {
-    setSelectedItem(item);
+    // Assuming the images in the original feed are relative to the domain 'https://dynomight.net'
+    const modifiedContent = item.content.replace(
+      /<img src="\//g,
+      '<img src="https://dynomight.net/',
+    );
+    setSelectedItem({ ...item, content: modifiedContent });
   };
 
   const handleUnselect = () => {
