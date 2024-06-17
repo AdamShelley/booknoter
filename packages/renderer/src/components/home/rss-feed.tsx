@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { XMLParser } from "fast-xml-parser";
 import { Button } from "../ui/button";
+
+type FeedProps = {
+  selectedBlog: string;
+};
 
 type RSSFeedItem = {
   pubDate: Date;
@@ -14,7 +18,7 @@ type RSSFeedProps = {
   items: RSSFeedItem[];
 };
 
-const RSSFeed: React.FC = () => {
+const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
   const [feedTitle, setFeedTitle] = useState<string>("");
   const [feedItems, setFeedItems] = useState<RSSFeedItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<RSSFeedItem | null>(null);
@@ -23,7 +27,8 @@ const RSSFeed: React.FC = () => {
 
   const fetchLink = async () => {
     try {
-      const response = await fetch(CORS_PROXY + "https://dynomight.net/feed.xml");
+      const response = await fetch(CORS_PROXY + selectedBlog);
+      console.log(response);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -31,16 +36,33 @@ const RSSFeed: React.FC = () => {
       const parser = new XMLParser();
       const parsed = parser.parse(text);
 
-      // Extract feed title and items
       console.log(parsed);
-      const title: string = parsed.feed.title;
-      const items: RSSFeedItem[] = parsed.feed.entry.map((item: RSSFeedItem) => ({
-        title: item.title,
-        link: item.link,
-        content: item.content,
-      }));
 
-      setFeedTitle(title);
+      let feedTitle, items;
+      // Handle Atom format
+      if (parsed.feed) {
+        feedTitle = parsed.feed.title;
+        items = parsed.feed.entry.map((item: any) => ({
+          title: item.title,
+          link: item.link.href, // Atom links are usually objects
+          content: item.content || item.summary,
+        }));
+      }
+      // Handle RSS 2.0 format
+      else if (parsed.rss && parsed.rss.channel) {
+        feedTitle = parsed.rss.channel.title;
+        items = parsed.rss.channel.item.map((item: any) => ({
+          title: item.title,
+          link: item.link,
+          content: item.description,
+        }));
+      }
+      // Additional checks can be added here for other types like RSS 1.0
+      else {
+        throw new Error("Unsupported feed format");
+      }
+
+      setFeedTitle(feedTitle);
       setFeedItems(items);
       setError(null);
     } catch (err) {
@@ -62,18 +84,18 @@ const RSSFeed: React.FC = () => {
     setSelectedItem(null);
   };
 
+  // Use effect if new blog selected
+  useEffect(() => {
+    if (selectedBlog) {
+      fetchLink();
+    }
+  }, [selectedBlog]);
+
   return (
-    <div className="border border-gray-500 flex-1 rounded-sm p-3 shadow-md max-h-screen overflow-y-auto">
-      <h1 className="text-xl font-bold mb-4">RSS Feed</h1>
-      <Button
-        variant="ghost"
-        onClick={fetchLink}
-      >
-        Fetch Link
-      </Button>
+    <div className="flex-1 rounded-sm p-10 shadow-md max-h-screen overflow-y-auto">
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {feedTitle && <h2 className="text-lg font-semibold mt-4">{feedTitle}</h2>}
-      <ul className="list-disc list-inside mt-2">
+      <ul className="list-none list-inside mt-2">
         {!selectedItem &&
           feedItems.map((item, index) => {
             if (index > 10) return;
@@ -97,9 +119,15 @@ const RSSFeed: React.FC = () => {
           })}
       </ul>
       {selectedItem && (
-        <div className="mt-4 p-4 border border-gray-300 rounded-md ">
+        <div className="mt-4 p-4 rounded-md max-w-screen">
+          <Button
+            onClick={handleUnselect}
+            variant="ghost"
+          >
+            Go Back
+          </Button>
           <h3 className="text-lg font-semibold">{selectedItem.title}</h3>
-          <Button onClick={handleUnselect}>Go Back</Button>
+
           <div
             className="w-[85vw] lg:w-[50vw] xl:w-[45vw] 2xl:w-[30vw] prose dark:prose-invert 
             prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-base
