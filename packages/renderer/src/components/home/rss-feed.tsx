@@ -86,17 +86,19 @@ const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
 
   // Use effect if new blog selected
   useEffect(() => {
+    setSelectedItem(null);
     if (selectedBlog) {
       fetchLink();
     }
   }, [selectedBlog]);
 
   return (
-    <div className="flex-1 rounded-sm p-10 shadow-md max-h-screen overflow-y-auto">
+    <div className="flex-1 rounded-sm p-10 max-h-screen overflow-y-auto">
       {error && <p className="text-red-500 mt-4">{error}</p>}
-      {feedTitle && <h2 className="text-lg font-semibold mt-4">{feedTitle}</h2>}
+      {feedTitle && !error && <h2 className="text-lg font-semibold mt-4">{feedTitle}</h2>}
       <ul className="list-none list-inside mt-2">
         {!selectedItem &&
+          !error &&
           feedItems.map((item, index) => {
             if (index > 10) return;
             return (
@@ -118,7 +120,7 @@ const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
             );
           })}
       </ul>
-      {selectedItem && (
+      {selectedItem && !error && (
         <div className="mt-4 p-4 rounded-md max-w-screen">
           <Button
             onClick={handleUnselect}

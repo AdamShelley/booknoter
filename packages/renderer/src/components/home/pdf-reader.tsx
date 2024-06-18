@@ -12,12 +12,20 @@ const Sidebar = ({ setBlog }: SideBarProps) => {
       name: "Raptitude",
       url: "https://www.raptitude.com/feed/",
     },
+    {
+      name: "Monevator",
+      url: "http://feeds2.feedburner.com/Monevatorcom",
+    },
+    {
+      name: "Mark Manson",
+      url: "https://markmanson.net/feed",
+    },
   ];
 
   return (
-    <div className="border-r border-gray-600 w-64 h-full p-4 shadow-lg ">
-      <h2 className="text-xl font-bold py-4 text-gray-300">Lists</h2>
-      <ul className="">
+    <div className="w-64 h-full p-4  ">
+      {/* <h2 className="text-xl font-bold py-4 text-gray-300">Lists</h2> */}
+      <ul className="mt-10">
         {blogList.map(blog => (
           <li
             key={blog.name}

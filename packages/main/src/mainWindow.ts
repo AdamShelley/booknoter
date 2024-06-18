@@ -4,12 +4,21 @@ import { URL } from "node:url";
 
 async function createWindow() {
   const browserWindow = new BrowserWindow({
+    // titleBarStyle: "hidden",
+    // transparent: true,
+    // frame: false,
     titleBarStyle: "hidden",
+    titleBarOverlay: {
+      color: "#2e2e2e",
+      symbolColor: "#ff6d4b",
+    },
+    frame: false,
+    title: "RSS FEEDER",
     show: false, // Use the 'ready-to-show' event to show the instantiated BrowserWindow.
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       sandbox: false, // Sandbox disabled because the demo of preload script depend on the Node.js api
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like an iframe or Electron's BrowserView. @see https://www.electronjs.org/docs/latest/api/webview-tag#warning
