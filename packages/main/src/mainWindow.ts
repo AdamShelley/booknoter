@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { join } from "node:path";
 import { URL } from "node:url";
 
@@ -42,6 +42,11 @@ async function createWindow() {
     }
   });
 
+  browserWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: "deny" };
+  });
+
   /**
    * URL for main window.
    * Vite dev server for development.
@@ -73,3 +78,7 @@ export async function restoreOrCreateWindow() {
 
   window.focus();
 }
+
+ipcMain.on("open-external-link", (event, url) => {
+  shell.openExternal(url);
+});

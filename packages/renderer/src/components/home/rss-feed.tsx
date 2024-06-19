@@ -73,10 +73,8 @@ const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
 
   const handleItemClick = (item: RSSFeedItem) => {
     // Assuming the images in the original feed are relative to the domain 'https://dynomight.net'
-    const modifiedContent = item.content.replace(
-      /<img src="\//g,
-      '<img src="https://dynomight.net/',
-    );
+    const modifiedContent = item.content.replace(/<img src="\//g, `<img src=${item.link}`);
+
     setSelectedItem({ ...item, content: modifiedContent });
   };
 
@@ -91,6 +89,26 @@ const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
       fetchLink();
     }
   }, [selectedBlog]);
+
+  useEffect(() => {
+    const handleLinkClick = (event: Event) => {
+      const target = event.target as HTMLAnchorElement;
+      if (target.tagName === "A" && target.href) {
+        event.preventDefault();
+      }
+    };
+
+    const contentDiv = document.getElementById("content");
+    if (contentDiv) {
+      contentDiv.addEventListener("click", handleLinkClick);
+    }
+
+    return () => {
+      if (contentDiv) {
+        contentDiv.removeEventListener("click", handleLinkClick);
+      }
+    };
+  }, [selectedItem]);
 
   return (
     <div className="flex-1 rounded-sm p-10 max-h-screen overflow-y-auto">
@@ -121,10 +139,11 @@ const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
           })}
       </ul>
       {selectedItem && !error && (
-        <div className="mt-4 p-4 rounded-md max-w-screen">
+        <div className="mt-4 rounded-md max-w-screen">
           <Button
             onClick={handleUnselect}
-            variant="ghost"
+            className="my-4 px-0"
+            variant="link"
           >
             Go Back
           </Button>
