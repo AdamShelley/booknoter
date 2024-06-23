@@ -13,11 +13,6 @@ type RSSFeedItem = {
   link: string;
 };
 
-type RSSFeedProps = {
-  title: string;
-  items: RSSFeedItem[];
-};
-
 const RSSFeed: React.FC<FeedProps> = ({ selectedBlog }) => {
   const [feedTitle, setFeedTitle] = useState<string>("");
   const [feedItems, setFeedItems] = useState<RSSFeedItem[]>([]);
