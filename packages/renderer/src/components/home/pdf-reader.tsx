@@ -20,6 +20,10 @@ const Sidebar = ({ setBlog }: SideBarProps) => {
       name: "Mark Manson",
       url: "https://markmanson.net/feed",
     },
+    {
+      name: "The Saving Ninja",
+      url: "https://thesavingninja.com/index.xml",
+    },
   ];
 
   return (
