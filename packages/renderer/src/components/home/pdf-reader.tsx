@@ -1,8 +1,11 @@
+import { Cog } from "lucide-react";
+
 type SideBarProps = {
   setBlog: (url: string) => void;
+  setShowSettings: () => void;
 };
 
-const Sidebar = ({ setBlog }: SideBarProps) => {
+const Sidebar = ({ setBlog, setShowSettings }: SideBarProps) => {
   const blogList = [
     {
       name: "Zen Habits",
@@ -26,6 +29,10 @@ const Sidebar = ({ setBlog }: SideBarProps) => {
     },
   ];
 
+  const goToSettings = () => {
+    setShowSettings();
+  };
+
   return (
     <div className="w-64 h-full p-4  ">
       {/* <h2 className="text-xl font-bold py-4 text-gray-300">Lists</h2> */}
@@ -40,6 +47,11 @@ const Sidebar = ({ setBlog }: SideBarProps) => {
           </li>
         ))}
       </ul>
+
+      <Cog
+        className="w-6 h-6 text-gray-500 mt-4 cursor-pointer hover:text-gray-300 transition"
+        onClick={goToSettings}
+      />
     </div>
   );
 };

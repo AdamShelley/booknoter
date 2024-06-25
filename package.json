@@ -73,6 +73,7 @@
     "pdfjs-dist": "^4.3.136",
     "prop-types": "^15.8.1",
     "react-resizable-panels": "^2.0.19",
+    "react-router-dom": "^6.24.0",
     "rss-parser": "^3.13.0",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
